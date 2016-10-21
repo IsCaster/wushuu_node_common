@@ -1,0 +1,6 @@
+./node_modules/*
+node_modules
+wifi_data.sublime-project
+wifi_data.sublime-workspace
+.DS_Store
+sftp-config.json
