@@ -1,7 +1,7 @@
 {
-  "name": "wushuu_node_dao",
+  "name": "wushuu_node_common",
   "version": "1.0.0",
-  "description": "data access object of wushuu node projects",
+  "description": "DAO of wushuu node projects & some other common functions",
   "main": "index.js",
   "directories": {
     "test": "test"
