@@ -5,7 +5,7 @@ var loadConf = model_module.loadConf
 var assert = require('assert')
 var fs = require('fs')
 var promisify = require("bluebird").promisify
-var modelConfigJson = require("../lib/config/model.config.example.json")
+var modelConfigJson = require("../lib/conf/model.config.example.json")
 
 var modelTest = mdb => {
     describe('[ DAO/Model (' + mdb + ') ]', function() {
