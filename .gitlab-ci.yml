@@ -10,5 +10,5 @@ build:
     - npm run coverage
     - rm -rf /builds/wushuu-ads/coverage/node_common
     - mkdir -p /builds/wushuu-ads/coverage/node_common 
-    - cp -r coverage/* /builds/wushuu-ads/coverage/node/
+    - cp -r coverage/* /builds/wushuu-ads/coverage/node_common/
     - echo "All done!"
