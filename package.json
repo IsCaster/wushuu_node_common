@@ -30,6 +30,7 @@
     "node-tair-rdb": "git+https://code.wushuu.com/wushuu-ads/node-tair-rdb.git"
   },
   "devDependencies": {
+    "assert": "^1.4.1",
     "nyc": "^8.3.2",
     "should": "^11.1.1"
   }

@@ -1,5 +1,5 @@
-var db_module = require('../DAO/db');
-var table_module = require('../DAO/table');
+var db_module = require('../lib/db');
+var table_module = require('../lib/table');
 var assert = require('assert')
 var should = require('should');
 
