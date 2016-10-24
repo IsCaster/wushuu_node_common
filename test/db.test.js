@@ -1,25 +1,25 @@
 var should = require('should');
-var db_module = require('../DAO/db.js');
-var used_keys = []
 
-function save_used_key(keys) {
-    if (keys.constructor === Array) {
-        keys.forEach(key => _save_used_key(key))
-    } else {
-        _save_used_key(keys)
-    }
-}
-
-function _save_used_key(key) {
-    if (used_keys.indexOf(key) === -1) {
-        used_keys.push(key)
-    }
-}
-
-describe('[ DAO/db.js ]', function() {
+var MDBTest = mdb => describe('[ DAO/db.js ' + mdb + ' ]', function() {
     var db
+    var used_keys = []
+
+    function save_used_key(keys) {
+        if (keys.constructor === Array) {
+            keys.forEach(key => _save_used_key(key))
+        } else {
+            _save_used_key(keys)
+        }
+    }
+
+    function _save_used_key(key) {
+        if (used_keys.indexOf(key) === -1) {
+            used_keys.push(key)
+        }
+    }
+
     before(function(done) {
-        db = new db_module.DB();
+        db = new require('../lib/' + mdb + '_db').DB();
         db.q_connect().then(function() {
             console.log('memory db connected')
             done();
@@ -411,3 +411,6 @@ describe('[ DAO/db.js ]', function() {
             }).catch(err => done(err))
     })
 })
+
+
+["tair", "redis"].map(MDBTest)
