@@ -1,7 +1,7 @@
 var should = require('should');
 
 var MDBTest = mdb => {
-    describe('[ DAO/db.js ' + mdb + ' ]', function() {
+    describe('[ DAO/db.js (' + mdb + ') ]', function() {
         var db
         var used_keys = []
 

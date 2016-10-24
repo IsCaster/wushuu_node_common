@@ -1,4 +1,4 @@
-var kafka = require('../DAO/kafka/producer');
+var kafka = require('../lib/kafka/producer');
 
 describe('[ DAO/kafka ]', function() {
     var topic = 'regist-ap';
