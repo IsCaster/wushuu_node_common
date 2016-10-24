@@ -10,14 +10,7 @@ var modelConfigJson = require("../lib/conf/model.conf.example.json")
 var modelTest = mdb => {
     describe('[ DAO/Model (' + mdb + ') ]', function() {
         before(function(done) {
-            var db = new db_module.DB()
-            db.q_connect().then(function() {
-                console.log('memory db connected')
-                model_module.Model_setDB(db)
-            }).then(() => {
-                loadConf(modelConfigJson)
-                done()
-            })
+            model_module.init(modelConfigJson).then(done)
         })
 
         describe('Model basic', function() {

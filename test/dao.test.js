@@ -35,7 +35,10 @@ var DAOTest = mdb => {
 			db = new db_module.DB();
 			db.q_connect().then(function() {
 				console.log('memory db connected')
-				done();
+				return require('../lib/DAO.js').init()
+			}).then(() => {
+				console.log('dao module inited')
+				done()
 			}).catch(err => done(err))
 		})
 
