@@ -1,0 +1,14 @@
+variables:
+  GIT_SSL_NO_VERIFY: "1"
+
+build:
+  stage: build
+  script:
+    - git config --global http.sslVerify false
+    - cnpm install
+    - npm test
+    - npm run coverage
+    - rm -rf /builds/wushuu-ads/coverage/node_common
+    - mkdir -p /builds/wushuu-ads/coverage/node_common 
+    - cp -r coverage/* /builds/wushuu-ads/coverage/node/
+    - echo "All done!"
