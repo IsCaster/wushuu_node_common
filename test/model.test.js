@@ -1,17 +1,25 @@
-var db_module = require('../lib/db');
-var model_module = require('../lib/Model');
-var Model_factory = model_module.Model_factory;
+var db_module = require('../lib/db')
+var model_module = require('../lib/Model')
+var Model_factory = model_module.Model_factory
+var loadConf = model_module.loadConf
 var assert = require('assert')
+var fs = require('fs')
+var promisify = require("bluebird").promisify
+var modelConfigJson = require("../lib/config/model.config.example.json")
+
 var modelTest = mdb => {
     describe('[ DAO/Model (' + mdb + ') ]', function() {
         before(function(done) {
-            var db = new db_module.DB();
+            var db = new db_module.DB()
             db.q_connect().then(function() {
                 console.log('memory db connected')
-                model_module.Model_setDB(db);
-                done();
+                model_module.Model_setDB(db)
+            }).then(() => {
+                loadConf(modelConfigJson)
+                done()
             })
-        });
+        })
+
         describe('Model basic', function() {
             it('Add a space', function(done) {
                 var op = Model_factory('ad.space').p({
