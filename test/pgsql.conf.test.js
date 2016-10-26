@@ -12,8 +12,7 @@ describe('[ DAO/orm/pgsql ]', function() {
     var transformConf = pgsqlConf.__get__("transformConf")
     it('transformConf with timestamp', function(done) {
         var conf = {
-            "name": "mall.goods",
-            "tableName": "goods",
+            "name": "goods",
             "type": "simple",
             "attr": [{
                 "key": "owner",
