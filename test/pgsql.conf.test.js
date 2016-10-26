@@ -147,7 +147,10 @@ describe('[ DAO/orm/pgsql ]', function() {
         console.log(require("util").inspect(retConf))
         should(objectEquals(retConf[0], expectPgConf[0])).equal(true)
         should(objectEquals(retConf[1], expectPgConf[1])).equal(true)
-        should(objectEquals(retConf[2], expectPgConf[2])).equal(true)
+        reConf[2].should.have.properties(["cache", "hooks", "methods"])
+        reConf[2].cache.should.be.false()
+        reConf[2].hooks.should.have.properties(["beforeSave", "beforeCreate"])
+        reConf[2].methods.should.have.properties("serialize")
         done()
     })
 
