@@ -191,7 +191,7 @@
         }, {
             "key": "lastloginip",
             "default": "",
-            "type": "text"
+            "type": "string"
         }, {
             "key": "iswblist",
             "default": 0,
@@ -836,15 +836,10 @@
             "key": "last_login_time",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "mall": {
         "name": "mall",
@@ -979,15 +974,10 @@
             "key": "mall_id",
             "default": 0,
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "tags_define": {
         "name": "tags_define",
@@ -995,7 +985,7 @@
         "attr": [{
             "key": "tag_name",
             "default": "",
-            "type": "text"
+            "type": "string"
         }, {
             "key": "tag_group",
             "default": 0,
@@ -1015,7 +1005,7 @@
         }, {
             "key": "type",
             "default": "",
-            "type": "text"
+            "type": "string"
         }, {
             "key": "level",
             "default": 0,
@@ -1031,7 +1021,7 @@
         "attr": [{
             "key": "type",
             "default": "",
-            "type": "text"
+            "type": "string"
         }, {
             "key": "level",
             "default": 0,
@@ -1039,11 +1029,11 @@
         }, {
             "key": "action",
             "default": "",
-            "type": "text"
+            "type": "string"
         }, {
             "key": "param",
             "default": "",
-            "type": "text"
+            "type": "string"
         }],
         "set": false,
         "PG": true,

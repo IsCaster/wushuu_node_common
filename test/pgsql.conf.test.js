@@ -347,6 +347,67 @@ describe('[ DAO/orm/pgsql ]', function() {
         }
         pgsqlConf.defineTable(exportName, conf)
         pgsqlConf.getTables().should.have.property(exportName)
+        done()
     })
-
+    it('registerTable', function(done) {
+        var exportName = "testTable"
+        var conf = {
+            "name": "testTable",
+            "type": "simple",
+            "attr": [{
+                "key": "owner",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "type",
+                "default": "",
+                "type": "string"
+            }, {
+                "key": "change",
+                "default": 0,
+                "type": "double"
+            }, {
+                "key": "remark",
+                "default": "",
+                "type": "string"
+            }, {
+                "key": "mall_id",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "transaction_time",
+                "type": "date"
+            }, {
+                "key": "checked",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "code",
+                "default": 0,
+                "type": "float",
+                "size": 4
+            }],
+            "set": false,
+            "PG": true,
+            "timestamp": true
+        }
+        pgsqlConf.registerTable(exportName, conf).then(() => {
+            pgsqlConf.getTables().should.have.property(exportName)
+            var g_db = pgsqlConf.__get__("g_db")
+            var TestTable = pgsqlConf.getTables()[exportName]
+            var newEntry = {
+                "owner": "10001",
+                "type": "win",
+                "change": 999999.9999,
+                "transaction_time": new Date()
+            }
+            TestTable.create(newEntry, err => {
+                should.not.exist(err)
+                TestTable.drop(err => {
+                    should.not.exist(err)
+                    done()
+                })
+            })
+        }).catch(done)
+    })
 })
