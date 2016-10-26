@@ -145,12 +145,13 @@ describe('[ DAO/orm/pgsql ]', function() {
         }]
         var retConf = transformConf(conf)
         console.log(require("util").inspect(retConf))
-        should(objectEquals(retConf[0], expectPgConf[0])).equal(true)
-        should(objectEquals(retConf[1], expectPgConf[1])).equal(true)
+        reConf.length.should.equal(3)
         reConf[2].should.have.properties(["cache", "hooks", "methods"])
         reConf[2].cache.should.be.false()
         reConf[2].hooks.should.have.properties(["beforeSave", "beforeCreate"])
         reConf[2].methods.should.have.properties("serialize")
+        should(objectEquals(retConf[0], expectPgConf[0])).equal(true)
+        should(objectEquals(retConf[1], expectPgConf[1])).equal(true)
         done()
     })
 
@@ -303,6 +304,50 @@ describe('[ DAO/orm/pgsql ]', function() {
         should(objectEquals(retConf[1], expectPgConf[1])).equal(true)
         should(objectEquals(retConf[2], expectPgConf[2])).equal(true)
         done()
+    })
+    it('defineTable', function(done) {
+        var exportName = "fund_queue"
+        var conf = {
+            "name": "fund_queue",
+            "type": "simple",
+            "attr": [{
+                "key": "owner",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "type",
+                "default": "",
+                "type": "string"
+            }, {
+                "key": "change",
+                "default": 0,
+                "type": "double"
+            }, {
+                "key": "remark",
+                "default": "",
+                "type": "string"
+            }, {
+                "key": "mall_id",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "transaction_time",
+                "type": "date"
+            }, {
+                "key": "checked",
+                "default": 0,
+                "type": "int"
+            }, {
+                "key": "code",
+                "default": 0,
+                "type": "int"
+            }],
+            "set": false,
+            "PG": true,
+            "timestamp": true
+        }
+        pgsqlConf.defineTable(exportName, conf)
+        pgsqlConf.getTables().should.have.property(exportName)
     })
 
 })

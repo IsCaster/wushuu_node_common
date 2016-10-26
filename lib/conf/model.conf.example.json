@@ -145,18 +145,12 @@
             "key": "date",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
         "PG": true
     },
     "User": {
-        "name": "User",
+        "name": "users",
         "type": "simple",
         "attr": [{
             "key": "name",
@@ -251,15 +245,10 @@
         }, {
             "key": "data",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "vip_notification": {
         "name": "vip_notification",
@@ -275,7 +264,8 @@
             "type": "int"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "WA_BASIC_FJ_0001": {
         "name": "WA_BASIC_FJ_0001",
@@ -410,7 +400,7 @@
         "set": true
     },
     "mall.goods": {
-        "name": "mall.goods",
+        "name": "goods",
         "type": "simple",
         "attr": [{
             "key": "owner",
@@ -468,10 +458,11 @@
             "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "mall.coupon": {
-        "name": "mall.coupon",
+        "name": "coupon",
         "type": "simple",
         "attr": [{
             "key": "title",
@@ -509,18 +500,13 @@
             "key": "imageUrl",
             "default": "",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "mall.shop": {
-        "name": "mall.shop",
+        "name": "shop",
         "type": "simple",
         "attr": [{
             "key": "name",
@@ -582,15 +568,10 @@
             "key": "latitude",
             "default": "",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "mall.shop.coupon": {
         "name": "mall.shop",
@@ -668,18 +649,13 @@
             "key": "code",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ap.sync.info": {
-        "name": "ap.sync.info",
+        "name": "ap_sync_info",
         "type": "simple",
         "attr": [{
             "key": "shopId",
@@ -705,18 +681,13 @@
             "key": "encrypt_key",
             "default": "",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ap.portal.image": {
-        "name": "ap.portal.image",
+        "name": "portal_image",
         "type": "simple",
         "attr": [{
             "key": "shopId",
@@ -746,15 +717,10 @@
             "key": "valid",
             "default": "1",
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ap.ssid": {
         "name": "ap.ssid",
@@ -790,7 +756,7 @@
         "set": true
     },
     "ap.wblist": {
-        "name": "ap.wblist",
+        "name": "ap_wblist",
         "type": "simple",
         "attr": [{
             "key": "shopId",
@@ -804,15 +770,10 @@
             "key": "mac",
             "default": "",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "PG": true,
-        "set": false
+        "set": false,
+        "timestamp": true
     },
     "account": {
         "name": "acount",
@@ -845,7 +806,7 @@
         "set": false
     },
     "ad.owner": {
-        "name": "ad.owner",
+        "name": "ad_owner",
         "type": "simple",
         "attr": [{
             "key": "name",
@@ -896,18 +857,13 @@
             "key": "describe",
             "default": "",
             "type": "string"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ad.owner.special": {
-        "name": "ad.owner.special",
+        "name": "ad_owner_special",
         "type": "simple",
         "attr": [{
             "key": "name",
@@ -937,7 +893,8 @@
             "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ad.owner.priority": {
         "name": "ad.owner.priority",
@@ -998,15 +955,10 @@
             "key": "shop_id",
             "default": -1,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "shop_member": {
         "name": "shop_member",
@@ -1048,15 +1000,10 @@
             "key": "tag_group",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "acl_roles": {
         "name": "acl_roles",
@@ -1073,15 +1020,10 @@
             "key": "level",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "acl_permission": {
         "name": "acl_permission",
@@ -1102,15 +1044,10 @@
             "key": "param",
             "default": "",
             "type": "text"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "Cache.group.set": {
         "name": "Cache",
@@ -1144,15 +1081,10 @@
         }, {
             "key": "arrive_time",
             "type": "date"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "transaction_record": {
         "name": "transaction_record",
@@ -1184,15 +1116,10 @@
         }, {
             "key": "transaction_time",
             "type": "date"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "owner_change": {
         "name": "owner_change",
@@ -1236,15 +1163,10 @@
         }, {
             "key": "transaction_time",
             "type": "date"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "fund_queue": {
         "name": "fund_queue",
@@ -1280,15 +1202,10 @@
             "key": "code",
             "default": 0,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "mall_income_record": {
         "name": "mall_income_record",
@@ -1320,15 +1237,10 @@
         }, {
             "key": "transaction_time",
             "type": "date"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     },
     "ads_engine": {
         "name": "ads_engine",
@@ -1349,14 +1261,9 @@
             "key": "valid",
             "default": 1,
             "type": "int"
-        }, {
-            "key": "create_time",
-            "type": "date"
-        }, {
-            "key": "update_time",
-            "type": "date"
         }],
         "set": false,
-        "PG": true
+        "PG": true,
+        "timestamp": true
     }
 }
