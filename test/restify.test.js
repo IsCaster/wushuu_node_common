@@ -26,7 +26,6 @@ var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_c
 describe('test common_db_op_test', function() {
     before('init db', function(done) {
         co(function*() {
-            yield pgsqlConf.init(pg_conn_str)
             var exportName = "test_table"
             var conf = {
                 "name": "test_table",
@@ -68,7 +67,9 @@ describe('test common_db_op_test', function() {
                 "PG": true,
                 "timestamp": true
             }
-            yield pgsqlConf.registerTable(exportName, conf)
+
+            yield model_module.init(modelConfigJson, pg_conn_str)
+            model_module.registerModel(exportName, conf)
             pgsqlConf.getTables().should.have.property(exportName)
             TestTable = pgsqlConf.getTables()[exportName]
             var newEntry = {
@@ -77,11 +78,15 @@ describe('test common_db_op_test', function() {
                 "change": 999999.9999,
                 "transaction_time": new Date()
             }
-            TestTable.create(newEntry, err => {
-                should.not.exist(err)
+            yield new Promise((resolve, reject) => {
+                TestTable.create(newEntry, err => {
+                    if (err !== null)
+                        reject(err)
+                    else
+                        resolve()
+                })
             })
-            yield model_module.init(modelConfigJson, pg_conn_str)
-            model_module.registerModel(conf.name, conf)
+
             var app = express()
             before_hander = function(req, res) {
                 return new Promise(function(resolve, reject) {
