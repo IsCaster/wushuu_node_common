@@ -28,7 +28,6 @@
     "kafka-node": "^1.0.2",
     "moment": "^2.15.2",
     "node-rsa": "^0.4.2",
-    "express": "^4.12.3",
     "node-tair-rdb": "git+https://code.wushuu.com/wushuu-ads/node-tair-rdb.git",
     "orm": "^3.1.0",
     "pg": "^6.1.0"
@@ -38,6 +37,7 @@
     "nyc": "^8.3.2",
     "rewire": "^2.5.2",
     "should": "^11.1.1",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.0",
+    "express": "^4.12.3",
   }
 }
