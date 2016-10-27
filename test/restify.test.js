@@ -24,9 +24,10 @@ var pg_conf = {
 var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
 
 describe('test restify', function() {
+    var exportName = "test_rest_table"
+
     before('init db', function(done) {
         co(function*() {
-            var exportName = "test_rest_table"
             var conf = {
                 "name": "test_rest_table",
                 "type": "simple",
@@ -114,7 +115,7 @@ describe('test restify', function() {
     })
 
     it('# get list', function(done) {
-        request(ctx.express).get('/test_table/list')
+        request(ctx.express).get('/' + exportName + '/list')
             .query({
                 page_size: 10,
                 or: [{
@@ -137,7 +138,7 @@ describe('test restify', function() {
     })
 
     it('# get distinct', function(done) {
-        request(ctx.express).get('/test_table/list')
+        request(ctx.express).get('/' + exportName + '/list')
             .query({
                 filter: {
                     distinct: {
@@ -158,7 +159,7 @@ describe('test restify', function() {
     })
 
     it('# get count api', function(done) {
-        request(ctx.express).get('/test_table/count')
+        request(ctx.express).get('/' + exportName + '/count')
             .query({
                 or: [{
                     owner: orm.not_like('%' + '123' + '%')
