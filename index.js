@@ -9,4 +9,4 @@ exports.Model_factory = require('./lib/Model').Model_factory
 exports.init = require('./lib/Model').init
 exports.utils = require('./lib/utils')
 exports.restify = require('./lib/restify')
-exports.kafka = require('./lib/kafka/productor')
+exports.kafka = require('./lib/kafka/producer')
