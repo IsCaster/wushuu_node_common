@@ -10,3 +10,4 @@ exports.init = require('./lib/Model').init
 exports.utils = require('./lib/utils')
 exports.restify = require('./lib/restify')
 exports.kafka = require('./lib/kafka/producer')
+exports.table_operator = require('./lib/orm/pgsql.db.dao').table_operator
