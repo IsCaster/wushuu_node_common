@@ -1,6 +1,6 @@
 {
   "name": "wushuu_node_common",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "DAO of wushuu node projects & some other common functions",
   "main": "index.js",
   "directories": {
@@ -37,6 +37,7 @@
     "assert": "^1.4.1",
     "nyc": "^8.3.2",
     "rewire": "^2.5.2",
-    "should": "^11.1.1"
+    "should": "^11.1.1",
+    "supertest": "^2.0.0"
   }
 }
