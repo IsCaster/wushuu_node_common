@@ -6,11 +6,21 @@ var assert = require('assert')
 var fs = require('fs')
 var promisify = require("bluebird").promisify
 var modelConfigJson = require("../lib/conf/model.conf.example.json")
+var pg_conf = {
+    'host': 'WUSHUU-PG',
+    'port': 5432,
+    'user': 'wushuu',
+    'pass': 'woyoadmin',
+    'db': 'adsweb'
+}
+var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
+
+
 
 var modelTest = mdb => {
     describe('[ DAO/Model (' + mdb + ') ]', function() {
         before(function(done) {
-            model_module.init(modelConfigJson).then(done)
+            model_module.init(modelConfigJson, pg_conn_str).then(done)
         })
 
         describe('Model basic', function() {

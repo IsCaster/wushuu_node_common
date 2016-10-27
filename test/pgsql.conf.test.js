@@ -3,10 +3,20 @@ var rewire = require('rewire')
 var pgsqlConf = rewire('../lib/orm/pgsql.db.config')
 var moment = require('moment')
 var objectEquals = require('../lib/utils').objectEquals
+var pg_conf = {
+    'host': 'WUSHUU-PG',
+    'port': 5432,
+    'user': 'wushuu',
+    'pass': 'woyoadmin',
+    'db': 'adsweb'
+}
+var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
+
+
 
 describe('[ DAO/orm/pgsql ]', function() {
     before(function(done) {
-        pgsqlConf.init().then(done)
+        pgsqlConf.init(pg_conn_str).then(done)
     })
 
     var transformConf = pgsqlConf.__get__("transformConf")

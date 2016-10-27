@@ -8,3 +8,5 @@ exports.Model_getDB = require('./lib/Model').Model_getDB
 exports.Model_factory = require('./lib/Model').Model_factory
 exports.init = require('./lib/Model').init
 exports.utils = require('./lib/utils')
+exports.restify = require('./lib/restify')
+exports.kafka = require('./lib/kafka/productor')
