@@ -23,12 +23,12 @@ var pg_conf = {
 }
 var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
 
-describe('test common_db_op_test', function() {
+describe('test restify', function() {
     before('init db', function(done) {
         co(function*() {
-            var exportName = "test_table"
+            var exportName = "test_rest_table"
             var conf = {
-                "name": "test_table",
+                "name": "test_rest_table",
                 "type": "simple",
                 "attr": [{
                     "key": "owner",
@@ -69,7 +69,7 @@ describe('test common_db_op_test', function() {
             }
 
             yield model_module.init(modelConfigJson, pg_conn_str)
-            model_module.registerModel(exportName, conf)
+            yield model_module.registerModel(exportName, conf)
             pgsqlConf.getTables().should.have.property(exportName)
             TestTable = pgsqlConf.getTables()[exportName]
             var newEntry = {
@@ -109,7 +109,7 @@ describe('test common_db_op_test', function() {
             count(ctx)
             done()
         }).catch(function(err) {
-            console.log('./test/restify.test.js() err' + err.stack)
+            console.log('./test/restify.test.js() err:' + err.stack)
         })
     })
 
