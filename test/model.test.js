@@ -22,7 +22,21 @@ var modelTest = mdb => {
         before(function(done) {
             model_module.init(modelConfigJson, pg_conn_str).then(done)
         })
+        it('find Model: shop', function(done) {
+            var shopId = 4
+            var ownerId = 8
+            Model_factory('mall.shop').where({
+                'owner': 8,
+                'id': 4
+            }).list(function(result) {
+                if (result.code && result.value != '') {
+                    done()
+                } else {
+                    done(err)
+                }
+            })
 
+        })
         describe('Model basic', function() {
             it('Add a space', function(done) {
                 var op = Model_factory('ad.space').p({
