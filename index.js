@@ -1,5 +1,6 @@
 exports.DB = require('./lib/db').DB
 exports.ansyMap = require('./lib/db').ansyMap
+exports.setMDB = require('./lib/db').setMDB
 exports.TABLE_TYPE = require('./lib/table').TABLE_TYPE
 exports.DAO = require('./lib/DAO').DAO
 exports.Model_regist = require('./lib/Model').Model_regist
