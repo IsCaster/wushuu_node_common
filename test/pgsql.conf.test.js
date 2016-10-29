@@ -15,6 +15,7 @@ var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_c
 
 
 describe('[ DAO/orm/pgsql ]', function() {
+    var TestTable
     before(function(done) {
         pgsqlConf.init(pg_conn_str).then(done)
     })
@@ -404,20 +405,43 @@ describe('[ DAO/orm/pgsql ]', function() {
         pgsqlConf.registerTable(exportName, conf).then(() => {
             pgsqlConf.getTables().should.have.property(exportName)
             var g_db = pgsqlConf.__get__("g_db")
-            var TestTable = pgsqlConf.getTables()[exportName]
+            TestTable = pgsqlConf.getTables()[exportName]
             var newEntry = {
-                "owner": "10001",
+                "owner": 10001,
                 "type": "win",
                 "change": 999999.9999,
                 "transaction_time": new Date()
             }
             TestTable.create(newEntry, err => {
                 should.not.exist(err)
-                TestTable.drop(err => {
-                    should.not.exist(err)
-                    done()
-                })
+                done()
             })
         }).catch(done)
+    })
+
+    it('find TestTable', function(done) {
+        TestTable.find({
+            owner: 10001
+        }, function(err, entries) {
+            if (err) throw err;
+            console.log("TestTable entries found: %d", entries.length);
+            var entry = entries.pop()
+            console.log("First TestTable entry, owne: %s, type: %s, create_time=%s", entry.owner, entry.type, entry.create_time);
+            should(entry.owner).equal(10001)
+            should(entry.type).equal("win")
+            should.exist(entry.create_time)
+            should.exist(entry.update_time)
+            entry.create_time.should.be.a.Date()
+            entry.update_time.should.be.a.Date()
+            done()
+        })
+
+    })
+
+    it('drop TestTable', function(done) {
+        TestTable.drop(err => {
+            should.not.exist(err)
+            done()
+        })
     })
 })

@@ -1,5 +1,4 @@
 var should = require('should');
-var db_module = require('../lib/db.js');
 var DAO = require('../lib/DAO.js').DAO
 var pg_conf = {
 	'host': 'WUSHUU-PG',
@@ -42,7 +41,8 @@ var DAOTest = mdb => {
 		var new_user2
 
 		before(function(done) {
-			db = new db_module.DB();
+			var DB = require('../lib/' + mdb + '_db').DB
+			db = new DB();
 			db.q_connect().then(function() {
 				console.log('memory db connected')
 				return require('../lib/DAO.js').init(pg_conn_str)
