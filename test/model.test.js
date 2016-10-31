@@ -1,9 +1,13 @@
+var should = require('should')
 var db_module = require('../lib/db')
 var model_module = require('../lib/Model')
+var setMDB = require('../lib/db').setMDB
 var Model_factory = model_module.Model_factory
 var loadConf = model_module.loadConf
+var table_operator = require("../lib/orm/pgsql.db.dao").table_operator
 var assert = require('assert')
 var fs = require('fs')
+var co = require('co')
 var promisify = require("bluebird").promisify
 var modelConfigJson = require("../lib/conf/model.conf.example.json")
 var pg_conf = {
@@ -16,26 +20,11 @@ var pg_conf = {
 var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
 
 
-
 var modelTest = mdb => {
     describe('[ DAO/Model (' + mdb + ') ]', function() {
         before(function(done) {
+            setMDB(mdb)
             model_module.init(modelConfigJson, pg_conn_str).then(done)
-        })
-        it('find Model: shop', function(done) {
-            var shopId = 4
-            var ownerId = 8
-            Model_factory('mall.shop').where({
-                'owner': 8,
-                'id': 4
-            }).list(function(result) {
-                if (result.code && result.value != '') {
-                    done()
-                } else {
-                    done(err)
-                }
-            })
-
         })
         describe('Model basic', function() {
             it('Add a space', function(done) {
@@ -119,7 +108,90 @@ var modelTest = mdb => {
                     })
                 })
             });
-        });
+        })
+        var exportName
+        it("registerModel of PG", function(done) {
+            co(function*() {
+                exportName = "a_new_model_table"
+                var conf = {
+                    "name": "test_model_table",
+                    "type": "simple",
+                    "attr": [{
+                        "key": "owner",
+                        "default": 0,
+                        "type": "int"
+                    }, {
+                        "key": "type",
+                        "default": "",
+                        "type": "string"
+                    }, {
+                        "key": "change",
+                        "default": 0,
+                        "type": "double"
+                    }, {
+                        "key": "remark",
+                        "default": "",
+                        "type": "string"
+                    }, {
+                        "key": "mall_id",
+                        "default": 0,
+                        "type": "int"
+                    }, {
+                        "key": "transaction_time",
+                        "type": "date"
+                    }, {
+                        "key": "checked",
+                        "default": 0,
+                        "type": "int"
+                    }, {
+                        "key": "code",
+                        "default": 0,
+                        "type": "float",
+                        "size": 4
+                    }],
+                    "set": false,
+                    "PG": true,
+                    "timestamp": true
+                }
+                yield model_module.registerModel(exportName, conf)
+                should.exist(table_operator(exportName))
+                var newEntry = {
+                    "owner": 10001,
+                    "type": "win",
+                    "change": 999999.9999,
+                    "transaction_time": new Date()
+                }
+                var op = Model_factory(exportName).p(newEntry).save(function() {
+                    op = op.list(function(entries) {
+                        console.log("[ registerModel of PG ] get entries:", JSON.stringify(entries))
+                        var entry = entries.value.pop()
+                        entry.create_time.should.be.a.Date()
+                        entry.update_time.should.be.a.Date()
+                        done()
+                    })
+                })
+            })
+        })
+
+        it("del entries in Model of PG", function(done) {
+            op = Model_factory(exportName)
+            op.list()
+                .del(entries => should(entries.code).equal(1))
+                .list(entries => {
+                    console.log("[ del entries in Model of PG ] get entries:", JSON.stringify(entries))
+                    should(entries.value.length).equal(0)
+                    done()
+                })
+        })
+
+
+        it("del Model of PG", function(done) {
+            op = table_operator(exportName)
+            op.model.drop(err => {
+                should.not.exist(err)
+                done()
+            })
+        })
     })
 }
 

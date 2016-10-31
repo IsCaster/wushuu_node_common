@@ -74,7 +74,7 @@ describe('test restify', function() {
             pgsqlConf.getTables().should.have.property(exportName)
             TestTable = pgsqlConf.getTables()[exportName]
             var newEntry = {
-                "owner": "10001",
+                "owner": 10001,
                 "type": "win",
                 "change": 999999.9999,
                 "transaction_time": new Date()
