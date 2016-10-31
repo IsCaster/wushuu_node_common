@@ -990,6 +990,10 @@
             "key": "tag_group",
             "default": 0,
             "type": "int"
+        }, {
+            "key": "tag_id",
+            "default": 0,
+            "type": "int"
         }],
         "set": false,
         "PG": true,
