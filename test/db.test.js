@@ -409,7 +409,7 @@ var MDBTest = mdb => {
                 var scores = [1, 2, 3, 41, 5, -9, 1399]
                 save_used_key(key)
                 Promise.all(values.map((value, index) => db.setZV(key, value, scores[index], "int")))
-                    .then(() => db.zcard(key))
+                    .then(() => db.zcard("test_zcard_key"))
                     .then(count => {
                         count.should.be.equal(7)
                         done()
@@ -422,7 +422,7 @@ var MDBTest = mdb => {
                 var scores = [1, 2, 3, 41, 5, -9, 1399]
                 save_used_key(key)
                 Promise.all(values.map((value, index) => db.setZV(key, value, scores[index], "float")))
-                    .then(() => db.zcount(key, -9, 5))
+                    .then(() => db.zcount("test_zcount_key", -9, 5))
                     .then(count => {
                         count.should.be.equal(5)
                         done()
@@ -434,7 +434,7 @@ var MDBTest = mdb => {
                     "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，不能为民解困，实在愧当『大侠』两字。 只盼你心头牢牢记着"]
                 save_used_key(key)
                 db.setSV(key, values)
-                    .then(() => db.scard(key))
+                    .then(() => db.scard("test_set_key_string"))
                     .then(count => {
                         count.should.be.equal(values.length)
                         done()
