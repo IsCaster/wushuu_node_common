@@ -429,7 +429,7 @@ var MDBTest = mdb => {
                     }).catch(done)
             })
             it("should scard work", done => {
-                var key = "test_set_key_string"
+                var key = "test_scard_key"
                 var values = ["Firday", "node_ads_backend", "documentation", "balabalabala....",
                     "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，不能为民解困，实在愧当『大侠』两字。 只盼你心头牢牢记着"]
                 save_used_key(key)
