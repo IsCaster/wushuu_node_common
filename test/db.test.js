@@ -438,7 +438,7 @@ var MDBTest = mdb => {
                     .then(count => {
                         count.should.be.equal(values.length)
                         done()
-                    })
+                    }).catch(done)
             })
         }
 
