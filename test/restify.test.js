@@ -9,23 +9,23 @@ var assert = require('assert')
 var orm = require('orm')
 var should = require('should')
 var check_response = require('../lib/utils').check_response;
+var bodyParser = require('body-parser')
 var before_hander
 var after_hander
 var ctx
 var TestTable
 var modelConfigJson = require("../lib/conf/model.conf.example.json")
 var pg_conf = {
-    'host': 'WUSHUU-PG',
-    'port': 5432,
+    'host': 'CITIC-SERVER',
+    'port': 15432,
     'user': 'wushuu',
     'pass': 'woyoadmin',
-    'db': 'adsweb'
+    'db': 'citic'
 }
-var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
-
+var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + ":" + pg_conf.port + "/" + pg_conf.db;
 describe('test restify', function() {
     var exportName = "test_rest_table"
-
+    var added_id
     before('init db', function(done) {
         co(function*() {
             var conf = {
@@ -68,8 +68,10 @@ describe('test restify', function() {
                 "PG": true,
                 "timestamp": true
             }
-
-            yield model_module.init(modelConfigJson, pg_conn_str)
+            yield model_module.init(modelConfigJson, pg_conn_str, 'redis', {
+                "host": "CITIC-SERVER",
+                "port": 16379
+            })
             yield model_module.registerModel(exportName, conf)
             pgsqlConf.getTables().should.have.property(exportName)
             TestTable = pgsqlConf.getTables()[exportName]
@@ -87,8 +89,14 @@ describe('test restify', function() {
                         resolve()
                 })
             })
-
             var app = express()
+            app.use(bodyParser.json({
+                limit: '50mb'
+            })); // to support JSON-encoded bodies
+            app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
+                extended: true,
+                limit: '50mb'
+            }));
             before_hander = function(req, res) {
                 return new Promise(function(resolve, reject) {
                     console.log('test list_op start')
@@ -103,15 +111,101 @@ describe('test restify', function() {
             }
             var list = db_op.list_gen(exportName, exportName, before_hander, after_hander)
             var count = db_op.count_gen(exportName, exportName, before_hander)
+            var add = db_op.add_gen(exportName, exportName, before_hander, ['owner', 'change'])
+            var update = db_op.update_gen(exportName, exportName, before_hander)
+            var del = db_op.del_gen(exportName, exportName, before_hander)
+            var get = db_op.get_gen(exportName, exportName, before_hander)
             ctx = {
                 express: app
             }
             list(ctx)
             count(ctx)
+            add(ctx)
+            update(ctx)
+            del(ctx)
+            get(ctx)
             done()
         }).catch(function(err) {
             console.log('./test/restify.test.js() err:' + err.stack)
         })
+    })
+
+    it('#add api', function(done) {
+        request(ctx.express)
+            .post('/' + exportName + '/add')
+            .send({
+                "owner": 10012,
+                "type": "win",
+                "change": 999999.9999,
+                "transaction_time": new Date()
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    added_id = msg.index
+                    assert.equal(1, msg.code)
+                    assert.equal('save success', msg.msg)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+    it('#update api', function(done) {
+        request(ctx.express)
+            .post('/' + exportName + '/update')
+            .send({
+                "id": added_id,
+                "owner": 10013,
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(1, msg.code)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+    it('#get api', function(done) {
+        request(ctx.express)
+            .get('/' + exportName + '/get')
+            .query({
+                "id": added_id
+            })
+            .expect(200)
+            .end(function(err, res) {
+                console.log('hahhahahha = ' + err, res.text)
+                check_response(err, res.text).then(function(msg) {
+                    console.log(res.text)
+                    assert.equal(1, msg.code)
+                    assert.equal(10013, msg.value.owner)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+    it('#remove api', function(done) {
+        request(ctx.express)
+            .get('/' + exportName + '/remove')
+            .query({
+                "id": added_id
+            })
+            .expect(200)
+            .end(function(err, res) {
+                console.log(err, res.text)
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(1, msg.code)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
     })
 
     it('# get list', function(done) {
