@@ -125,7 +125,7 @@ describe('test restify', function() {
             var update = db_op.update_gen(exportName, exportName, spy_before)
             var del = db_op.del_gen(exportName, exportName, spy_before)
             var get = db_op.get_gen(exportName, exportName, spy_before)
-            var valid = db_op.valid_gen(exportName, exportName, spy_before)
+            var invalid = db_op.invalid_gen(exportName, exportName, spy_before)
             ctx = {
                 express: app
             }
@@ -135,7 +135,7 @@ describe('test restify', function() {
             update(ctx)
             del(ctx)
             get(ctx)
-            valid(ctx)
+            invalid(ctx)
             done()
         }).catch(function(err) {
             console.log('./test/restify.test.js() err:' + err.stack)
@@ -203,7 +203,7 @@ describe('test restify', function() {
             })
     })
 
-    it('#valid api', function(done) {
+    it('#invalid api', function(done) {
         request(ctx.express)
             .get('/' + exportName + '/invalid')
             .query({
