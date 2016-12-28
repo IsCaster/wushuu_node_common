@@ -10,6 +10,7 @@ var orm = require('orm')
 var should = require('should')
 var check_response = require('../lib/utils').check_response;
 var bodyParser = require('body-parser')
+var sinon = require('sinon')
 var before_hander
 var after_hander
 var ctx
@@ -26,6 +27,8 @@ var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_c
 describe('test restify', function() {
     var exportName = "test_rest_table"
     var added_id
+    var spy_before
+    var spy_after
     before('init db', function(done) {
         co(function*() {
             var conf = {
@@ -63,6 +66,10 @@ describe('test restify', function() {
                     "default": 0,
                     "type": "float",
                     "size": 4
+                }, {
+                    "key": "valid",
+                    "default": 1,
+                    "type": "int",
                 }],
                 "set": false,
                 "PG": true,
@@ -109,12 +116,16 @@ describe('test restify', function() {
                     resolve(data)
                 })
             }
-            var list = db_op.list_gen(exportName, exportName, before_hander, after_hander)
-            var count = db_op.count_gen(exportName, exportName, before_hander)
-            var add = db_op.add_gen(exportName, exportName, before_hander, ['owner', 'change'])
-            var update = db_op.update_gen(exportName, exportName, before_hander)
-            var del = db_op.del_gen(exportName, exportName, before_hander)
-            var get = db_op.get_gen(exportName, exportName, before_hander)
+
+            spy_before = sinon.spy(before_hander);
+            spy_after = sinon.spy(after_hander);
+            var list = db_op.list_gen(exportName, exportName, spy_before, spy_after)
+            var count = db_op.count_gen(exportName, exportName, spy_before)
+            var add = db_op.add_gen(exportName, exportName, spy_before, ['owner', 'change'])
+            var update = db_op.update_gen(exportName, exportName, spy_before)
+            var del = db_op.del_gen(exportName, exportName, spy_before)
+            var get = db_op.get_gen(exportName, exportName, spy_before)
+            var valid = db_op.valid_gen(exportName, exportName, spy_before)
             ctx = {
                 express: app
             }
@@ -124,6 +135,7 @@ describe('test restify', function() {
             update(ctx)
             del(ctx)
             get(ctx)
+            valid(ctx)
             done()
         }).catch(function(err) {
             console.log('./test/restify.test.js() err:' + err.stack)
@@ -145,6 +157,7 @@ describe('test restify', function() {
                     added_id = msg.index
                     assert.equal(1, msg.code)
                     assert.equal('save success', msg.msg)
+                    assert.equal(1, spy_before.callCount)
                     done()
                 }).catch(function(err) {
                     done(err)
@@ -162,6 +175,7 @@ describe('test restify', function() {
             .expect(200)
             .end(function(err, res) {
                 check_response(err, res.text).then(function(msg) {
+                    assert.equal(2, spy_before.callCount)
                     assert.equal(1, msg.code)
                     done()
                 }).catch(function(err) {
@@ -178,9 +192,8 @@ describe('test restify', function() {
             })
             .expect(200)
             .end(function(err, res) {
-                console.log('hahhahahha = ' + err, res.text)
                 check_response(err, res.text).then(function(msg) {
-                    console.log(res.text)
+                    assert.equal(3, spy_before.callCount)
                     assert.equal(1, msg.code)
                     assert.equal(10013, msg.value.owner)
                     done()
@@ -190,6 +203,45 @@ describe('test restify', function() {
             })
     })
 
+    it('#valid api', function(done) {
+        request(ctx.express)
+            .get('/' + exportName + '/invalid')
+            .query({
+                "id": added_id
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(4, spy_before.callCount)
+                    assert.equal(1, msg.code)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+    it('#get api', function(done) {
+        request(ctx.express)
+            .get('/' + exportName + '/get')
+            .query({
+                "id": added_id
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(5, spy_before.callCount)
+                    assert.equal(1, msg.code)
+                    assert.equal(0, msg.value.valid)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+
+
     it('#remove api', function(done) {
         request(ctx.express)
             .get('/' + exportName + '/remove')
@@ -198,8 +250,8 @@ describe('test restify', function() {
             })
             .expect(200)
             .end(function(err, res) {
-                console.log(err, res.text)
                 check_response(err, res.text).then(function(msg) {
+                    assert.equal(6, spy_before.callCount)
                     assert.equal(1, msg.code)
                     done()
                 }).catch(function(err) {
@@ -224,6 +276,8 @@ describe('test restify', function() {
                 check_response(err, res.text).then(function(msg) {
                     assert.equal(1, msg.code)
                     assert.equal(1, msg.data.length)
+                    assert.equal(7, spy_before.callCount)
+                    assert.equal(1, spy_after.callCount)
                     done()
                 }).catch(function(err) {
                     done(err)
@@ -243,6 +297,7 @@ describe('test restify', function() {
             .expect(200)
             .end(function(err, res) {
                 check_response(err, res.text).then(function(msg) {
+                    assert.equal(8, spy_before.callCount)
                     assert.equal(1, msg.code)
                     assert.equal('10001', msg.data.owner)
                     done()
@@ -264,12 +319,15 @@ describe('test restify', function() {
                 check_response(err, res.text).then(function(msg) {
                     assert.equal(1, msg.code)
                     assert.equal(1, msg.data)
+                    assert.equal(9, spy_before.callCount)
                     done()
                 }).catch(function(err) {
                     done(err)
                 })
             })
     })
+
+
 
     it('# Clear test Table', function(done) {
         TestTable.drop(err => {
