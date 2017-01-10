@@ -21,10 +21,7 @@ var MDBTest = mdb => {
 
         before(function(done) {
             var DB = require('../lib/' + mdb + '_db').DB
-            db = new DB(2, {
-                port: 16379,
-                host: "CITIC-SERVER"
-            });
+            db = new DB();
             db.q_connect().then(function() {
                 console.log('memory db connected')
                 done();
@@ -468,4 +465,4 @@ var MDBTest = mdb => {
     })
 }
 
-["redis"].forEach(MDBTest)
+["tair", "redis"].forEach(MDBTest)
