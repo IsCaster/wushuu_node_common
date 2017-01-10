@@ -1,7 +1,7 @@
 var should = require('should');
 
 var MDBTest = mdb => {
-    describe('[ DAO/db.js (' + mdb + ') ]', function () {
+    describe('[ DAO/db.js (' + mdb + ') ]', function() {
         var db
         var used_keys = []
 
@@ -19,16 +19,19 @@ var MDBTest = mdb => {
             }
         }
 
-        before(function (done) {
+        before(function(done) {
             var DB = require('../lib/' + mdb + '_db').DB
-            db = new DB();
-            db.q_connect().then(function () {
+            db = new DB(2, {
+                port: 16379,
+                host: "CITIC-SERVER"
+            });
+            db.q_connect().then(function() {
                 console.log('memory db connected')
                 done();
             }).catch(err => done(err))
         })
 
-        it('setKV, string', function (done) {
+        it('setKV, string', function(done) {
             var key = "test_key_string"
             var value = "test_value"
             save_used_key(key)
@@ -39,7 +42,7 @@ var MDBTest = mdb => {
                 done()
             }).catch(err => done(err))
         })
-        it('getV, empty key', function (done) {
+        it('getV, empty key', function(done) {
             var key = "test_empty_string_key"
             db.getV(key)
                 .then(value => should(value).be.exactly(null))
@@ -50,7 +53,7 @@ var MDBTest = mdb => {
                 .then(() => done())
                 .catch(done)
         })
-        it('setKV, int', function (done) {
+        it('setKV, int', function(done) {
             var key = "test_key_int"
             var value = 987654321
             save_used_key(key)
@@ -61,7 +64,7 @@ var MDBTest = mdb => {
                 done()
             }).catch(err => done(err))
         })
-        it('setKV, float', function (done) {
+        it('setKV, float', function(done) {
             var key = "test_key_float"
             var value = 98765.4321
             save_used_key(key)
@@ -72,7 +75,7 @@ var MDBTest = mdb => {
                 done()
             }).catch(err => done(err))
         })
-        it('setSV, string', function (done) {
+        it('setSV, string', function(done) {
             var key = "test_set_key_string"
             var values = ["Firday", "node_ads_backend", "documentation", "balabalabala...."]
             var new_value = "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，\
@@ -90,22 +93,22 @@ var MDBTest = mdb => {
                 })
             }).then(() =>
                 db.rmSV(key, values[3])
-                ).then(() =>
-                    db.getSV(key)
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 3) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(() =>
+                db.getSV(key)
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 3) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
         })
 
-        it('setSV, number, int', function (done) {
+        it('setSV, number, int', function(done) {
             var key = "test_set_key_int"
             var values = [1, 3, 9, 1280123]
             var new_value = 4
@@ -123,22 +126,22 @@ var MDBTest = mdb => {
                 })
             }).then(() =>
                 db.rmSV(key, values[3], "int")
-                ).then(() =>
-                    db.getSV(key, "int")
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 3) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(() =>
+                db.getSV(key, "int")
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 3) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
         })
 
-        it('setSV, number, float', function (done) {
+        it('setSV, number, float', function(done) {
             var key = "test_set_key_float"
             var values = [1.0, 3.81237, 9000.123, 128012.3]
             var new_value = 4.4234
@@ -156,23 +159,23 @@ var MDBTest = mdb => {
                 })
             }).then(() =>
                 db.rmSV(key, values[3], "float")
-                ).then(() =>
-                    db.getSV(key, "float")
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 3) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(() =>
+                db.getSV(key, "float")
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 3) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
 
         })
 
-        it('getSV, none exist key', function (done) {
+        it('getSV, none exist key', function(done) {
             var key = "none exist key"
             db.getSV(key).then(dlist => {
                 dlist.length.should.equal(0)
@@ -180,7 +183,7 @@ var MDBTest = mdb => {
             }).catch(err => done(err))
         })
 
-        it('setZV, string', function (done) {
+        it('setZV, string', function(done) {
             var key = "test_zset_key_string"
             var values = ["Firday", "node_ads_backend", "documentation", "balabalabala....", "foobaa", "donald trump",
                 "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，\
@@ -200,56 +203,56 @@ var MDBTest = mdb => {
                 dlist[6].should.equal(values[6])
             }).then(() =>
                 db.getZV(key, undefined, 2, 5)
-                ).then(dlist => {
-                    dlist.length.should.equal(3)
-                    dlist.indexOf(values[1]).should.be.above(-1)
-                    dlist.indexOf(values[2]).should.be.above(-1)
-                    dlist.indexOf(values[4]).should.be.above(-1)
-                }).then(() =>
-                    db.rmZV(key, values[1])
-                ).then(() =>
-                    db.getZV(key)
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 1) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(dlist => {
+                dlist.length.should.equal(3)
+                dlist.indexOf(values[1]).should.be.above(-1)
+                dlist.indexOf(values[2]).should.be.above(-1)
+                dlist.indexOf(values[4]).should.be.above(-1)
+            }).then(() =>
+                db.rmZV(key, values[1])
+            ).then(() =>
+                db.getZV(key)
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 1) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
         })
 
-        it('error handling, wrong key type 1', function (done) {
+        it('error handling, wrong key type 1', function(done) {
             var key = "str_key_error_handling"
             save_used_key(key)
             db.setKV(key, "fooooooooo").then(() =>
                 db.setZV(key, "asdfadsf", 123123)
             ).then(() =>
                 done(new Error("Should return a error"))
-                ).catch(err => {
-                    console.log("error handling, wrong key type 1, err=" + err.stack || err)
-                    err.message.should.equal("WRONGTYPE Operation against a key holding the wrong kind of value")
-                    done()
-                }).catch(done)
+            ).catch(err => {
+                console.log("error handling, wrong key type 1, err=" + err.stack || err)
+                err.message.should.equal("WRONGTYPE Operation against a key holding the wrong kind of value")
+                done()
+            }).catch(done)
         })
 
-        it('error handling, wrong key type 2', function (done) {
+        it('error handling, wrong key type 2', function(done) {
             var key = "set_key_error_handling"
             save_used_key(key)
             db.setSV(key, "asdfds12").then(() =>
                 db.setZV(key, "asdfadsf", 123123)
             ).then(() =>
                 done(new Error("Should return a error"))
-                ).catch(err => {
-                    err.message.should.equal("WRONGTYPE Operation against a key holding the wrong kind of value")
-                    done()
-                })
+            ).catch(err => {
+                err.message.should.equal("WRONGTYPE Operation against a key holding the wrong kind of value")
+                done()
+            })
         })
 
-        it('set, error handling', function (done) {
+        it('set, error handling', function(done) {
             var key = "set_key_error_handling"
             save_used_key(key)
             db.setSV(key, 123)
@@ -262,7 +265,7 @@ var MDBTest = mdb => {
                 .catch(done)
         })
 
-        it('zset, error handling', function (done) {
+        it('zset, error handling', function(done) {
             var key = "zet_key_error_handling"
             save_used_key(key)
             db.setZV(key, "one", 123)
@@ -277,7 +280,7 @@ var MDBTest = mdb => {
                 .catch(done)
         })
 
-        it('setZV, int', function (done) {
+        it('setZV, int', function(done) {
             var key = "test_zset_key_int"
             var values = [10001, 10004, 10008, 10009, 11009, 98, 14]
             var scores = [1, 2, 3, 41, 5, -9, 1399]
@@ -292,29 +295,35 @@ var MDBTest = mdb => {
                 })
             }).then(() =>
                 db.getZV(key, "int", 2, 5)
-                ).then(dlist => {
-                    dlist.length.should.equal(3)
-                    dlist.indexOf(values[1]).should.be.above(-1)
-                    dlist.indexOf(values[2]).should.be.above(-1)
-                    dlist.indexOf(values[4]).should.be.above(-1)
-                }).then(() =>
-                    db.rmZV(key, values[4], "int")
-                ).then(() =>
-                    db.getZV(key, "int")
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 4) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(dlist => {
+                dlist.length.should.equal(3)
+                dlist.indexOf(values[1]).should.be.above(-1)
+                dlist.indexOf(values[2]).should.be.above(-1)
+                dlist.indexOf(values[4]).should.be.above(-1)
+            }).then(() =>
+                db.getZV(key, "int", 2, 5, 0, 2)
+            ).then(dlist => {
+                dlist.length.should.equal(2)
+                dlist.indexOf(values[1]).should.be.above(-1)
+                dlist.indexOf(values[2]).should.be.above(-1)
+            }).then(() =>
+                db.rmZV(key, values[4], "int")
+            ).then(() =>
+                db.getZV(key, "int")
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 4) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
         })
 
-        it('setZV, float', function (done) {
+        it('setZV, float', function(done) {
             var key = "test_zset_key_float"
             var values = [100.01, 10004, 10008.1230014, 10.009, 110.09, 98, 142234.123]
             var scores = [1, 2, 3, 41, 5, -9, 1399]
@@ -329,52 +338,58 @@ var MDBTest = mdb => {
                 })
             }).then(() =>
                 db.getZV(key, "float", 2, 5)
-                ).then(dlist => {
-                    dlist.length.should.equal(3)
-                    dlist.indexOf(values[1]).should.be.above(-1)
-                    dlist.indexOf(values[2]).should.be.above(-1)
-                    dlist.indexOf(values[4]).should.be.above(-1)
-                }).then(() =>
-                    db.rmZV(key, values[4], "float")
-                ).then(() =>
-                    db.getZV(key, "float")
-                ).then(dlist => {
-                    dlist.length.should.equal(values.length - 1)
-                    values.forEach((value, index) => {
-                        if (index != 4) {
-                            dlist.indexOf(value).should.be.above(-1)
-                        } else {
-                            dlist.indexOf(value).should.equal(-1)
-                        }
-                    })
-                    done()
-                }).catch(err => done(err))
+            ).then(dlist => {
+                dlist.length.should.equal(3)
+                dlist.indexOf(values[1]).should.be.above(-1)
+                dlist.indexOf(values[2]).should.be.above(-1)
+                dlist.indexOf(values[4]).should.be.above(-1)
+            }).then(() =>
+                db.getZV(key, "float", 2, 5, 1, 2)
+            ).then(dlist => {
+                dlist.length.should.equal(2)
+                dlist.indexOf(values[2]).should.be.above(-1)
+                dlist.indexOf(values[4]).should.be.above(-1)
+            }).then(() =>
+                db.rmZV(key, values[4], "float")
+            ).then(() =>
+                db.getZV(key, "float")
+            ).then(dlist => {
+                dlist.length.should.equal(values.length - 1)
+                values.forEach((value, index) => {
+                    if (index != 4) {
+                        dlist.indexOf(value).should.be.above(-1)
+                    } else {
+                        dlist.indexOf(value).should.equal(-1)
+                    }
+                })
+                done()
+            }).catch(err => done(err))
         })
 
-        it('incr', function (done) {
+        it('incr', function(done) {
             var key = "test_incr_key"
             save_used_key(key)
             db.incr(key).then(() =>
                 db.getV(key)
             ).then(value =>
                 value.should.equal("1")
-                ).then(() =>
-                    db.incr(key, 10)
-                ).then(value =>
-                    value.should.equal(11)
-                ).then(() =>
-                    db.getV(key)
-                ).then(value =>
-                    value.should.equal("11")
-                ).then(() =>
-                    db.incr(key, 1000)
-                ).then(value => {
-                    value.should.equal(1011)
-                    done()
-                }).catch(err => done(err))
+            ).then(() =>
+                db.incr(key, 10)
+            ).then(value =>
+                value.should.equal(11)
+            ).then(() =>
+                db.getV(key)
+            ).then(value =>
+                value.should.equal("11")
+            ).then(() =>
+                db.incr(key, 1000)
+            ).then(value => {
+                value.should.equal(1011)
+                done()
+            }).catch(err => done(err))
         })
 
-        it('setHSV', function (done) {
+        it('setHSV', function(done) {
             var key = "test_hset_key_string"
             var fields = ["Firday", "node_ads_backend", "documentation", "balabalabala....", "foobaa", "donald trump",
                 "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，\
@@ -431,7 +446,8 @@ var MDBTest = mdb => {
             it("should scard work", done => {
                 var key = "test_scard_key"
                 var values = ["Firday", "node_ads_backend", "documentation", "balabalabala....",
-                    "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，不能为民解困，实在愧当『大侠』两字。 只盼你心头牢牢记着"]
+                    "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，不能为民解困，实在愧当『大侠』两字。 只盼你心头牢牢记着"
+                ]
                 save_used_key(key)
                 db.setSV(key, values)
                     .then(() => db.scard(key))
@@ -442,7 +458,7 @@ var MDBTest = mdb => {
             })
         }
 
-        it("clear up, remove used keys", function (done) {
+        it("clear up, remove used keys", function(done) {
             Promise.all(used_keys.map(key => db.rmK(key)))
                 .then(retList => {
                     retList.every(ret => ret === 1).should.equal(true)
@@ -452,4 +468,4 @@ var MDBTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(MDBTest)
+["redis"].forEach(MDBTest)
