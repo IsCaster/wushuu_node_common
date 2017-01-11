@@ -86,7 +86,8 @@ describe('test restify', function() {
                 "owner": 10001,
                 "type": "win",
                 "change": 999999.9999,
-                "transaction_time": new Date()
+                "transaction_time": new Date(),
+                "valid": 0
             }
             yield new Promise((resolve, reject) => {
                 TestTable.create(newEntry, err => {
@@ -264,6 +265,7 @@ describe('test restify', function() {
         request(ctx.express).get('/' + exportName + '/list')
             .query({
                 page_size: 10,
+                valid: [0, 1],
                 or: [{
                     owner: orm.not_like('%' + '123' + '%')
                 }],
@@ -274,6 +276,7 @@ describe('test restify', function() {
             .expect(200)
             .end(function(err, res) {
                 check_response(err, res.text).then(function(msg) {
+                    console.log(msg)
                     assert.equal(1, msg.code)
                     assert.equal(1, msg.data.length)
                     assert.equal(7, spy_before.callCount)
@@ -313,6 +316,7 @@ describe('test restify', function() {
                 or: [{
                     owner: orm.not_like('%' + '123' + '%')
                 }],
+                valid: [0, 1]
             })
             .expect(200)
             .end(function(err, res) {
