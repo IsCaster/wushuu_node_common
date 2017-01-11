@@ -86,7 +86,8 @@ describe('test restify', function() {
                 "owner": 10001,
                 "type": "win",
                 "change": 999999.9999,
-                "transaction_time": new Date()
+                "transaction_time": new Date(),
+                "valid": 0
             }
             yield new Promise((resolve, reject) => {
                 TestTable.create(newEntry, err => {
@@ -264,6 +265,7 @@ describe('test restify', function() {
         request(ctx.express).get('/' + exportName + '/list')
             .query({
                 page_size: 10,
+                valid: [0, 1],
                 or: [{
                     owner: orm.not_like('%' + '123' + '%')
                 }],
@@ -274,6 +276,7 @@ describe('test restify', function() {
             .expect(200)
             .end(function(err, res) {
                 check_response(err, res.text).then(function(msg) {
+                    console.log(msg)
                     assert.equal(1, msg.code)
                     assert.equal(1, msg.data.length)
                     assert.equal(7, spy_before.callCount)
@@ -313,6 +316,7 @@ describe('test restify', function() {
                 or: [{
                     owner: orm.not_like('%' + '123' + '%')
                 }],
+                valid: [0, 1]
             })
             .expect(200)
             .end(function(err, res) {
@@ -327,7 +331,72 @@ describe('test restify', function() {
             })
     })
 
+    it('#add ten record', function(done) {
+        co(function*() {
+            for (var i = 0; i < 10; i++) {
+                yield new Promise(function(resolve, reject) {
+                    request(ctx.express).post('/' + exportName + '/add')
+                        .send({
+                            "owner": 10012,
+                            "type": "win",
+                            "change": 999999.9999,
+                            "transaction_time": new Date(),
+                            "valid": i % 2
+                        })
+                        .expect(200)
+                        .end(function(err, res) {
+                            check_response(err, res.text).then(function(msg) {
+                                msg.should.have.properties(['code', 'index']);
+                                msg.code.should.equal(1)
+                                msg.index.should.be.above(0)
+                                resolve()
+                            }).catch(function(err) {
+                                reject(err);
+                            })
+                        })
+                })
+            }
+            done()
 
+        })
+    })
+
+    it('# get list all', function(done) {
+        request(ctx.express).get('/' + exportName + '/list')
+            .query({
+                page_size: 10,
+                index: 0,
+                valid: [0, 1]
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(1, msg.code)
+                    assert.equal(10, msg.data.length)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
+
+    it('# get list valid', function(done) {
+        request(ctx.express).get('/' + exportName + '/list')
+            .query({
+                page_size: 10,
+                index: 0,
+            })
+            .expect(200)
+            .end(function(err, res) {
+                check_response(err, res.text).then(function(msg) {
+                    assert.equal(1, msg.code)
+                    assert.equal(5, msg.data.length)
+                    done()
+                }).catch(function(err) {
+                    done(err)
+                })
+            })
+    })
 
     it('# Clear test Table', function(done) {
         TestTable.drop(err => {
