@@ -4,7 +4,7 @@ var pgsqlConf = rewire('../lib/orm/pgsql.db.config')
 var moment = require('moment')
 var objectEquals = require('../lib/utils').objectEquals
 var pg_conf = {
-    'host': 'WUSHUU-PG',
+    'host': 'pg',
     'port': 5432,
     'user': 'wushuu',
     'pass': 'woyoadmin',
