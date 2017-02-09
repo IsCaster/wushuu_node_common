@@ -1,7 +1,7 @@
 var should = require('should');
 var DAO = require('../lib/DAO.js').DAO
 var pg_conf = {
-	'host': 'WUSHUU-PG',
+	'host': 'pg',
 	'port': 5432,
 	'user': 'wushuu',
 	'pass': 'woyoadmin',

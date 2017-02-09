@@ -11,7 +11,7 @@ var co = require('co')
 var promisify = require("bluebird").promisify
 var modelConfigJson = require("../lib/conf/model.conf.example.json")
 var pg_conf = {
-    'host': 'WUSHUU-PG',
+    'host': 'pg',
     'port': 5432,
     'user': 'wushuu',
     'pass': 'woyoadmin',
