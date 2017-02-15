@@ -1,6 +1,6 @@
 {
   "name": "wushuu_node_common",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "DAO of wushuu node projects & some other common functions",
   "main": "index.js",
   "directories": {
