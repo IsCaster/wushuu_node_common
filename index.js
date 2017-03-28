@@ -13,3 +13,4 @@ exports.restify = require('./lib/restify')
 exports.kafka = require('./lib/kafka/producer')
 exports.table_operator = require('./lib/orm/pgsql.db.dao').table_operator
 exports.getOrmDB = require('./lib/orm/pgsql.db.config').getOrmDB
+exports.get_log_conf = require('./lib/conf/log4js.conf').get_log_conf
