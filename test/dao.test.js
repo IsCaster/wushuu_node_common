@@ -265,4 +265,5 @@ var DAOTest = mdb => {
 	})
 }
 
-["tair", "redis"].forEach(DAOTest)
+//["tair", "redis"].forEach(DAOTest)
+["redis"].forEach(DAOTest)

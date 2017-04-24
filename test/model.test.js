@@ -195,4 +195,5 @@ var modelTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(modelTest)
+//["tair", "redis"].forEach(modelTest)
+["redis"].forEach(modelTest)
