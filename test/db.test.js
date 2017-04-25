@@ -465,4 +465,5 @@ var MDBTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(MDBTest)
+//["tair", "redis"].forEach(MDBTest)
+["redis"].forEach(MDBTest)
