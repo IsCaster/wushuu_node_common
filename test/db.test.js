@@ -298,6 +298,12 @@ var MDBTest = mdb => {
                 dlist.indexOf(values[2]).should.be.above(-1)
                 dlist.indexOf(values[4]).should.be.above(-1)
             }).then(() =>
+                db.getZV(key, "int", 2, 5, 0, 2)
+            ).then(dlist => {
+                dlist.length.should.equal(2)
+                dlist.indexOf(values[1]).should.be.above(-1)
+                dlist.indexOf(values[2]).should.be.above(-1)
+            }).then(() =>
                 db.rmZV(key, values[4], "int")
             ).then(() =>
                 db.getZV(key, "int")
@@ -335,6 +341,12 @@ var MDBTest = mdb => {
                 dlist.indexOf(values[2]).should.be.above(-1)
                 dlist.indexOf(values[4]).should.be.above(-1)
             }).then(() =>
+                db.getZV(key, "float", 2, 5, 1, 2)
+            ).then(dlist => {
+                dlist.length.should.equal(2)
+                dlist.indexOf(values[2]).should.be.above(-1)
+                dlist.indexOf(values[4]).should.be.above(-1)
+            }).then(() =>
                 db.rmZV(key, values[4], "float")
             ).then(() =>
                 db.getZV(key, "float")
@@ -350,8 +362,6 @@ var MDBTest = mdb => {
                 done()
             }).catch(err => done(err))
         })
-
-
 
         it('incr', function(done) {
             var key = "test_incr_key"
@@ -402,8 +412,48 @@ var MDBTest = mdb => {
                 })
                 done()
             }).catch(err => done(err))
-
         })
+
+        if (mdb === "redis") {
+            it("should zcard work", done => {
+                var key = "test_zcard_key"
+                var values = [10001, 10004, 10008, 10009, 11009, 98, 14]
+                var scores = [1, 2, 3, 41, 5, -9, 1399]
+                save_used_key(key)
+                Promise.all(values.map((value, index) => db.setZV(key, value, scores[index], "int")))
+                    .then(() => db.zcard(key))
+                    .then(count => {
+                        count.should.be.equal(7)
+                        done()
+                    }).catch(done)
+            })
+
+            it("should zcount work", done => {
+                var key = "test_zcount_key"
+                var values = [100.01, 10004, 10008.1230014, 10.009, 110.09, 98, 142234.123]
+                var scores = [1, 2, 3, 41, 5, -9, 1399]
+                save_used_key(key)
+                Promise.all(values.map((value, index) => db.setZV(key, value, scores[index], "float")))
+                    .then(() => db.zcount(key, -9, 5))
+                    .then(count => {
+                        count.should.be.equal(5)
+                        done()
+                    }).catch(done)
+            })
+            it("should scard work", done => {
+                var key = "test_scard_key"
+                var values = ["Firday", "node_ads_backend", "documentation", "balabalabala....",
+                    "江湖上所以尊称我一声『郭大侠』，实因敬我为国为民、奋不顾身的助守襄阳。 然我才力有限，不能为民解困，实在愧当『大侠』两字。 只盼你心头牢牢记着"
+                ]
+                save_used_key(key)
+                db.setSV(key, values)
+                    .then(() => db.scard(key))
+                    .then(count => {
+                        count.should.be.equal(values.length)
+                        done()
+                    }).catch(done)
+            })
+        }
 
         it("clear up, remove used keys", function(done) {
             Promise.all(used_keys.map(key => db.rmK(key)))
@@ -415,4 +465,5 @@ var MDBTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(MDBTest)
+//["tair", "redis"].forEach(MDBTest)
+["redis"].forEach(MDBTest)

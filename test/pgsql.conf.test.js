@@ -4,11 +4,11 @@ var pgsqlConf = rewire('../lib/orm/pgsql.db.config')
 var moment = require('moment')
 var objectEquals = require('../lib/utils').objectEquals
 var pg_conf = {
-    'host': 'WUSHUU-PG',
+    'host': 'pg',
     'port': 5432,
     'user': 'wushuu',
     'pass': 'woyoadmin',
-    'db': 'adsweb'
+    'db': 'citic'
 }
 var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
 
@@ -86,47 +86,59 @@ describe('[ DAO/orm/pgsql ]', function() {
             },
             owner: {
                 type: 'integer',
-                size: 8
-            }, //商户id
+                size: 8,
+                defaultValue: -1
+            },
             name: {
-                type: 'text'
-            }, //商品名
+                type: 'text',
+                defaultValue: ''
+            },
             describe: {
-                type: 'text'
-            }, //描述
+                type: 'text',
+                defaultValue: ''
+            },
             imageUrl: {
-                type: 'text'
-            }, //图片地址
+                type: 'text',
+                defaultValue: ''
+            },
             category: {
                 type: 'integer',
-                size: 8
-            }, //商品类型
+                size: 8,
+                defaultValue: -1
+            },
             price_origin: {
                 type: 'number',
-                size: 8
-            }, //原价
+                size: 8,
+                defaultValue: '0'
+            },
             price_true: {
                 type: 'number',
-                size: 8
-            }, //现价
+                size: 8,
+                defaultValue: '0'
+            },
             notice: {
-                type: 'text'
-            }, //提示信息
+                type: 'text',
+                defaultValue: ''
+            },
             buy_detail: {
-                type: 'text'
-            }, //购买详情
+                type: 'text',
+                defaultValue: ''
+            },
             isReturnAnytime: {
                 type: 'integer',
-                size: 8
+                size: 8,
+                defaultValue: 0
             },
             sales_number: {
                 type: 'integer',
-                size: 8
-            }, //已出售的数量
+                size: 8,
+                defaultValue: 0
+            },
             available_number: {
                 type: 'integer',
-                size: 8
-            }, //库存
+                size: 8,
+                defaultValue: 0
+            },
             create_time: {
                 type: 'date',
                 time: true
@@ -154,8 +166,7 @@ describe('[ DAO/orm/pgsql ]', function() {
             }
         }]
         var retConf = transformConf(conf)
-        console.log(require("util").inspect(retConf))
-        retConf.length.should.equal(3)
+        retConf.length.should.equal(3);
         retConf[2].should.have.properties(["cache", "hooks", "methods"])
         retConf[2].cache.should.be.false()
         retConf[2].hooks.should.have.properties(["beforeSave", "beforeCreate"])
@@ -299,11 +310,13 @@ describe('[ DAO/orm/pgsql ]', function() {
             },
             report_status: {
                 type: 'integer',
-                size: 8
+                size: 8,
+                defaultValue: 0
             },
             place_to_ap: {
                 type: 'integer',
-                size: 8
+                size: 8,
+                defaultValue: 0
             }
         }, {
             cache: false
@@ -315,6 +328,7 @@ describe('[ DAO/orm/pgsql ]', function() {
         should(objectEquals(retConf[2], expectPgConf[2])).equal(true)
         done()
     })
+
     it('defineTable', function(done) {
         var exportName = "fund_queue"
         var conf = {
@@ -360,6 +374,7 @@ describe('[ DAO/orm/pgsql ]', function() {
         pgsqlConf.getTables().should.have.property(exportName)
         done()
     })
+
     it('registerTable', function(done) {
         var exportName = "testTable"
         var conf = {

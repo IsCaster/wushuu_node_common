@@ -11,11 +11,11 @@ var co = require('co')
 var promisify = require("bluebird").promisify
 var modelConfigJson = require("../lib/conf/model.conf.example.json")
 var pg_conf = {
-    'host': 'WUSHUU-PG',
+    'host': 'pg',
     'port': 5432,
     'user': 'wushuu',
     'pass': 'woyoadmin',
-    'db': 'adsweb'
+    'db': 'citic'
 }
 var pg_conn_str = "postgres://" + pg_conf.user + ":" + pg_conf.pass + "@" + pg_conf.host + "/" + pg_conf.db;
 
@@ -195,4 +195,5 @@ var modelTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(modelTest)
+//["tair", "redis"].forEach(modelTest)
+["redis"].forEach(modelTest)
