@@ -26,5 +26,5 @@
         "key": "auth.set",
         "value": "string",
         "set": true
-    },
+    }
 }
