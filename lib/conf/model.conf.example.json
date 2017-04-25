@@ -514,7 +514,7 @@
             "type": "string"
         }, {
             "key": "owner",
-            "default": -1,
+            "default": 0,
             "type": "int"
         }, {
             "key": "code",
@@ -671,11 +671,11 @@
             "type": "string"
         }, {
             "key": "encrypt",
-            "default": "",
+            "default": 0,
             "type": "int"
         }, {
             "key": "encrypt_algorithm",
-            "default": "",
+            "default": 0,
             "type": "int"
         }, {
             "key": "encrypt_key",
@@ -699,11 +699,11 @@
             "type": "string"
         }, {
             "key": "mall_id",
-            "default": "",
+            "default": 0,
             "type": "int"
         }, {
             "key": "space",
-            "default": "",
+            "default": 0,
             "type": "int"
         }, {
             "key": "status",
@@ -973,7 +973,7 @@
         }, {
             "key": "mall_id",
             "default": 0,
-            "type": "string"
+            "type": "int"
         }],
         "set": false,
         "PG": true,
@@ -1004,7 +1004,7 @@
         "type": "simple",
         "attr": [{
             "key": "owner",
-            "default": "",
+            "default": 0,
             "type": "int"
         }, {
             "key": "type",
@@ -1255,6 +1255,26 @@
             "key": "valid",
             "default": 1,
             "type": "int"
+        }],
+        "set": false,
+        "PG": true,
+        "timestamp": true
+    },
+    "shop_tag": {
+        "name": "shop_tag",
+        "type": "simple",
+        "attr": [{
+            "key": "shop_id",
+            "default": -1,
+            "type": "int"
+        }, {
+            "key": "shop_name",
+            "default": "",
+            "type": "string"
+        }, {
+            "key": "tags",
+            "default": "",
+            "type": "string"
         }],
         "set": false,
         "PG": true,
