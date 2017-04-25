@@ -142,4 +142,5 @@ var tableTest = mdb => {
     })
 }
 
-["tair", "redis"].forEach(tableTest)
+//["tair", "redis"].forEach(tableTest)
+["redis"].forEach(tableTest)

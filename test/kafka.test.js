@@ -4,7 +4,7 @@ describe('[ DAO/kafka ]', function() {
     it('product message', function(done) {
         var topic = 'regist-ap';
         var msg = 'test_message';
-        var hosts = 'kafka';
+        var hosts = 'citic-server';
         kafka.send(hosts, topic, msg).then(function(msg) {
             console.log("kafka product message, message=" + msg)
             done()
