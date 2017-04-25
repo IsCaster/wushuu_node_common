@@ -514,7 +514,7 @@
             "type": "string"
         }, {
             "key": "owner",
-            "default": "",
+            "default": -1,
             "type": "int"
         }, {
             "key": "code",
