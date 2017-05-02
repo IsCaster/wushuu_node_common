@@ -28,7 +28,6 @@
 		"ioredis": "^2.4.0",
 		"kafka-node": "^1.1.0",
 		"lodash": "^4.17.4",
-		"md5": "^2.2.1",
 		"moment": "^2.15.2",
 		"node-rsa": "^0.4.2",
 		"node-tair-rdb": "git+https://code.wushuu.com/wushuu-ads/node-tair-rdb.git",
