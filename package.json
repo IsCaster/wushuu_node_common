@@ -1,45 +1,47 @@
 {
-  "name": "wushuu_node_common",
-  "version": "1.6.0",
-  "description": "DAO of wushuu node projects & some other common functions",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "nyc --cache mocha",
-    "coverage": "nyc report --reporter=html --reporter=text-summary"
-  },
-  "keywords": [
-    "wushuu",
-    "node",
-    "dao",
-    "common",
-    "utils"
-  ],
-  "author": "caster_zeng",
-  "license": "ISC",
-  "dependencies": {
-    "bluebird": "^3.4.6",
-    "body-parser": "^1.15.2",
-    "co": "^4.6.0",
-    "fs": "^0.0.1-security",
-    "http": "^0.0.0",
-    "ioredis": "^2.4.0",
-    "kafka-node": "^1.1.0",
-    "moment": "^2.15.2",
-    "node-rsa": "^0.4.2",
-    "node-tair-rdb": "git+https://code.wushuu.com/wushuu-ads/node-tair-rdb.git",
-    "orm": "^3.1.0",
-    "pg": "^6.1.0",
-    "sinon": "^1.17.6"
-  },
-  "devDependencies": {
-    "assert": "^1.4.1",
-    "nyc": "^8.3.2",
-    "rewire": "^2.5.2",
-    "should": "^11.1.1",
-    "supertest": "^2.0.0",
-    "express": "^4.12.3"
-  }
+    "name": "wushuu_node_common",
+    "version": "1.6.1",
+    "description": "DAO of wushuu node projects & some other common functions",
+    "main": "index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "nyc --cache mocha",
+        "coverage": "nyc report --reporter=html --reporter=text-summary"
+    },
+    "keywords": [
+        "wushuu",
+        "node",
+        "dao",
+        "common",
+        "utils"
+    ],
+    "author": "caster_zeng",
+    "license": "ISC",
+    "dependencies": {
+        "bluebird": "^3.4.6",
+        "body-parser": "^1.15.2",
+        "co": "^4.6.0",
+        "fs": "^0.0.1-security",
+        "http": "^0.0.0",
+        "ioredis": "^2.4.0",
+        "kafka-node": "^1.1.0",
+        "lodash": "^4.17.4",
+        "moment": "^2.15.2",
+        "node-rsa": "^0.4.2",
+        "node-tair-rdb": "git+https://code.wushuu.com/wushuu-ads/node-tair-rdb.git",
+        "orm": "^3.1.0",
+        "pg": "^6.1.0",
+        "promise": "^7.1.1",
+        "sinon": "^1.17.6"
+    },
+    "devDependencies": {
+        "assert": "^1.4.1",
+        "nyc": "^8.3.2",
+        "rewire": "^2.5.2",
+        "should": "^11.1.1",
+        "supertest": "^2.0.0",
+        "express": "^4.12.3"
+    }
 }
