@@ -14,3 +14,4 @@ exports.kafka = require('./lib/kafka/producer')
 exports.table_operator = require('./lib/orm/pgsql.db.dao').table_operator
 exports.getOrmDB = require('./lib/orm/pgsql.db.config').getOrmDB
 exports.getLogConf = require('./lib/conf/log4js.conf').getLogConf
+exports.checkNecessary = require('./lib/utils').checkNecessary
